@@ -1,10 +1,11 @@
 import React from "react";
-import Auth from "./components/Auth";
 import Blogs from "./components/Blogs";
 import { Route, Routes } from "react-router-dom";
-import SignUp from "./components/SignUp";
-import SignIn from "./components/SignIn";
+import SignUp from "./pages/auth/SignUp";
+import SignIn from "./pages/auth/SignIn";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFound from "./pages/error/NotFound";
+import Blog from "./pages/blogs/Blog";
 
 const App = () => {
   return (
@@ -20,6 +21,15 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/blogs/:id"
+          element={
+            <ProtectedRoute>
+              <Blog />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
