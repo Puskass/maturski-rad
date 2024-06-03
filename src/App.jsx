@@ -6,13 +6,25 @@ import SignIn from "./pages/auth/SignIn";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./pages/error/NotFound";
 import Blog from "./pages/blogs/Blog";
-
+import MainNavigation from "./shared/MainNavigation";
+import SignOut from "./pages/auth/SignOut";
+import Home from "./components/Home";
 const App = () => {
   return (
     <div>
+      <MainNavigation />
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route
+          path="/signout"
+          element={
+            <ProtectedRoute>
+              <SignOut />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/blogs"
           element={

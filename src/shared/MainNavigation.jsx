@@ -1,8 +1,11 @@
 import React from 'react'
+import NavLinks from './NavLinks'
 
 const MainNavigation = () => {
   return (
-    <div>MainNavigation</div>
+    <nav className="mb-10">
+      <NavLinks />
+    </nav>
   )
 }
 
