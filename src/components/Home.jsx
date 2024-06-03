@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { db } from "../config/firebase";
 import { getDocs, deleteDoc, doc, collection } from "firebase/firestore";
 import { useUserAuth } from "../context/AuthContext";
@@ -36,28 +37,54 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (user) {
-      getBlogList();
-    }
-  }, [user]);
+    getBlogList();
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h2 className="text-3xl font-bold mb-4">Blogs</h2>
-      {blogList.map((blog) => (
-        <div key={blog.id} className="bg-white rounded-lg shadow-md p-6 mb-4">
-          <h1 className="text-2xl font-bold mb-2">{blog.title}</h1>
-          <p className="text-gray-700 mb-4">{blog.description}</p>
-          {user?.uid === blog.userId && (
-            <button
-              className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
-              onClick={() => deleteBlog(blog.id)}
+      {user ? (
+        blogList.length === 0 ? (
+          <div className="text-center">
+            <p className="text-lg font-medium text-gray-700 mb-4">
+              Nema blogova, dodaj svoj prvi blog.
+            </p>
+            <Link
+              to="/blogs"
+              className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors"
             >
-              Delete Blog
-            </button>
-          )}
+              Dodaj Blog
+            </Link>
+          </div>
+        ) : (
+          blogList.map((blog) => (
+            <div key={blog.id} className="bg-white rounded-lg shadow-md p-6 mb-4">
+              <h1 className="text-2xl font-bold mb-2">{blog.title}</h1>
+              <p className="text-gray-700 mb-4">{blog.description}</p>
+              {user?.uid === blog.userId && (
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
+                  onClick={() => deleteBlog(blog.id)}
+                >
+                  Delete Blog
+                </button>
+              )}
+            </div>
+          ))
+        )
+      ) : (
+        <div className="text-center">
+          <p className="text-lg font-medium text-gray-700 mb-4">
+            Prijavite se da biste dodavali blogove.
+          </p>
+          <Link
+            to="/signin"
+            className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors"
+          >
+            Prijavi se
+          </Link>
         </div>
-      ))}
+      )}
     </div>
   );
 };
