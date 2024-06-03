@@ -1,64 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { auth, db } from "../config/firebase";
-import {
-  getDocs,
-  collection,
-  addDoc,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { useUserAuth } from "../context/AuthContext";
-import AddBlog from "../pages/blogs/AddBlog";
+import { useNavigate } from "react-router-dom";
 
 const Blogs = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const blogsCollectionRef = collection(db, "blogs");
   const { user } = useUserAuth();
+  const navigate = useNavigate();
 
-  // const handleSignOut = async () => {
-  //   try {
-  //     await logOut();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  const handleAddBlog = async (e) => {
+  const handleAddBlog = async () => {
     try {
       await addDoc(blogsCollectionRef, {
         title,
         description,
-        userId: auth?.currentUser?.uid,
+        userId: user?.uid, // Ensure userId is correctly set
       });
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <div>
-      <h1 className="text-center mb-4 ">
-        <span className="font-medium">Pozdrav </span>
-        {user.email}!
-      </h1>
-      <h2></h2>
-      <div className="mx-auto mt-20 py-10 flex flex-col justify-center items-center max-w-xs border rounded-md">
+<div className="container mx-auto px-4 py-8">
+      <h1 className="text-center mb-4 text-3xl font-bold">Pozdrav, {user.email}!</h1>
+      <div className="mx-auto mt-20 py-10 flex flex-col justify-center items-center max-w-xs border rounded-md shadow-md bg-white">
         <input
-          type="Title"
+          type="text"
           placeholder="Naslov"
-          className="border rounded-sm outline-none py-1 px-3 mb-2"
+          required
+          className="border rounded-sm outline-none w-60 py-2 px-4 mb-4 "
           onChange={(e) => setTitle(e.target.value)}
         />
         <textarea
-          type="Description"
           placeholder="Opis..."
-          className="border rounded-sm outline-none py-1 px-3 mb-2 max-w-xs"
+          required
+          className="border rounded-sm outline-none py-2 mb-4 px-4 w-60 max-h-40 resize-none"
           onChange={(e) => setDescription(e.target.value)}
-        >
-          </textarea>
+        />
         <button
-          className="bg-blue-200 px-8 py-2 font-semibold rounded-md hover:bg-blue-600 hover:text-white hover:transition-colors"
+          className="bg-blue-500 text-white px-8 py-2 font-semibold rounded-md hover:bg-blue-600 transition-colors"
           onClick={handleAddBlog}
         >
           Dodaj Blog

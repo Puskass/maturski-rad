@@ -14,10 +14,10 @@ const SignOut = () => {
     }
   };
   return (
-    <div className="text-center">
+    <div className="text-center h-screen mt-10">
       <button
         onClick={handleSignOut}
-        className="bg-red-200 px-8 py-2 font-semibold rounded-md hover:bg-red-600 hover:text-white hover:transition-colors"
+        className="bg-red-500 text-white px-8 py-3 font-semibold rounded-md shadow-md hover:bg-red-600 transition-colors"
       >
         Odjavi se
       </button>
